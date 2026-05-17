@@ -30,8 +30,7 @@ conda activate BS483
 
 ## Important rules
 
-1. Do not run any heavy job or program directly on `junglab.kaist.ac.kr`
-   except for ssh login.
+1. Do not run any heavy job or program directly on HPC ( go in nodes using 'qsub -I')
 
 2. Storage space is limited.
    Please compress large files when possible (example: `.gz` format).
