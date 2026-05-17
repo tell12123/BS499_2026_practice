@@ -35,9 +35,9 @@ conda activate BS483
 2. Storage space is limited.
    Please compress large files when possible (example: `.gz` format).
 
-3. Use `qsub/qstat` for heavy jobs on `alphacom.kaist.ac.kr`.
+3. Do not go erase others file/folders
 
-4. If possible, use other clusters you have access to.
+4. Do not go outside the workshop foler
 
 5. Use Conda/Anaconda for installing programs.
 
