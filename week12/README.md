@@ -527,7 +527,7 @@ Try changing:
 ```r
 data<-data*(2/quantile(data)[4])
 ```
-Try Any number~
+Change the 2 , Try Any Number~
 
 
 ---
