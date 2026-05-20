@@ -19,7 +19,7 @@ Using transformed COVID-19 patient data. :contentReference[oaicite:0]{index=0}
 ```
 conda activate BS483
 ```
-# Go in to R interactivfe mode
+# Go into R interactive mode
 
 ```
 R
