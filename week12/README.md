@@ -527,29 +527,20 @@ Try changing:
 ```r
 data<-data*(2/quantile(data)[4])
 ```
+Try Any number~
 
-Questions:
-- Does clustering become stronger?
-- Do clusters disappear?
-- Does CHIP-enriched cluster remain?
-
-:contentReference[oaicite:2]{index=2}
 
 ---
 
 # 2. Change t-SNE perplexity
 
-Try:
-
+Try Any number~
+example as
 ```r
 perplexity=5
 perplexity=10
 perplexity=20
-perplexity=30
 ```
-
-Questions:
-- Do clusters merge?
 
 
 
