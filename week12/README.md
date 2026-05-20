@@ -14,39 +14,11 @@ Using transformed COVID-19 patient data. :contentReference[oaicite:0]{index=0}
 
 ---
 
-# Load transformed data into R
+# Activate Conda Environment
 
-```r
-file<-read.table("CHIP_COVID-19-patients_smoothen_2_Logit_wo_gender.txt", header=T)
-
-head(file)
 ```
-
-Explanation:
-
-```r
-read.table()
+conda activate BS483
 ```
-
-Read txt table into R.
-
-```r
-header=T
-```
-
-Means first row is column names.
-
-```r
-head(file)
-```
-
-Show first 6 rows of the data.
-
-Purpose:
-- Check data loaded correctly
-- Check column names and values
-
----
 
 # Load required packages
 
