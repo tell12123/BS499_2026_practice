@@ -550,7 +550,70 @@ perplexity=30
 
 Questions:
 - Do clusters merge?
-- Do clusters split?
-- Does patient grouping change?
 
-:contentReference[oaicite:3]{index=3}
+
+
+# WHOLE R Code
+```r
+## Load library
+
+library(FactoMineR)
+library(ggplot2)
+library(Rtsne)
+library(M3C)
+
+
+## Define function
+
+euclidean_distance <- function(a, b) {
+  return(sqrt(sum((a - b)^2)))
+}
+
+## READ file and preform below
+file <- read.table("CHIP_COVID-19-patients_smoothen_2_Logit_wo_gender.txt", header = TRUE)
+rownames(file) <- file[, "ID"]
+file_transpose <- t(file[, -grep("ID|CHIP_allns|cluster", colnames(file))])
+
+Euc_dist <- matrix(0, nrow(file), nrow(file))
+colnames(Euc_dist) <- colnames(file_transpose)
+rownames(Euc_dist) <- colnames(file_transpose)
+
+for (i in c(1:ncol(Euc_dist))) {
+  for (j in c(1:nrow(Euc_dist))) {
+    Euc_dist[i, j] <- euclidean_distance(file_transpose[, i], file_transpose[, j])
+  }
+}
+
+set.seed(1)
+Euc_dist_corr <- cor(Euc_dist)
+Whole.pca <- PCA(t(Euc_dist_corr), graph = FALSE, ncp = 10)
+
+name_list <- paste0("ID", row.names(Euc_dist_corr))
+b <- Rtsne::Rtsne(Whole.pca$var$coord, perplexity = 10, check_duplicates = FALSE)
+YY <- b$Y
+rownames(YY) <- name_list
+colnames(YY) <- c("feature 1", "feature 2")
+
+m3c_clust2 <- M3C(t(YY))
+saveRDS(m3c_clust2, "CHIP_COVID-19-patients_smoothen_2_Logit_wo_gender_Euclid_dist_cor_PCA_per_10_tsne_m3c.rds")
+
+mat_tsne <- readRDS("CHIP_COVID-19-patients_smoothen_2_Logit_wo_gender_Euclid_dist_cor_PCA_per_10_tsne_m3c.rds")
+table <- read.table("CHIP_COVID-19_210405_220311_origianl_data.txt", header = TRUE, row.names = "ID")
+name_list <- paste0("ID", row.names(table))
+row.names(table) <- name_list
+
+mat <- t(mat_tsne$realdataresults[[8]]$ordered_data)
+mat_mat <- cbind(mat[name_list, ],mat_tsne$realdataresults[[8]]$ordered_annotation[name_list, ],table[name_list, "CHIP_allns"])
+mat_mat_d <- as.data.frame(mat_mat)
+colnames(mat_mat_d) <- c("V1", "V2", "V3", "V4")
+
+
+pdf("Plot.pdf")
+
+ggplot(mat_mat_d, aes(x = as.numeric(V1), y = as.numeric(V2), color = as.factor(V3), shape = as.factor(V4))) +
+  geom_point() +
+  scale_shape_manual(values = c(16, 17)) +
+  scale_colour_manual(values = c("#F27A2A", "#F7E863", "#69E28B", "#ADEF59", "#6CD7EF", "#2A8EF2", "#7BEFD3", "#535CF9"))
+dev.off()
+
+```
